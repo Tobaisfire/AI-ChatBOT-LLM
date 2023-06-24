@@ -30,7 +30,7 @@ class Mem:
     def __init__(self) -> None:
         pass
     def bot_memory(self,id_session):
-        client = MongoClient('mongodb://localhost:27017/')
+        client = MongoClient('mongodb+srv://Keval:wITlI7TnqdzjQYn2@cluster-bot-app.98wpose.mongodb.net/')
         
         db = client['Bot-history']
 
@@ -53,7 +53,7 @@ class Mem:
 
     def insert_or_update_data(self,data):
   
-        client = MongoClient('mongodb://localhost:27017/')
+        client = MongoClient('mongodb+srv://Keval:wITlI7TnqdzjQYn2@cluster-bot-app.98wpose.mongodb.net/')
     
         try:
           
@@ -125,7 +125,7 @@ client = weaviate.Client(
 vectorstore = Weaviate(client, "Wikipedia", "text")
 
 
-qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key='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',temperature=0,model='gpt-3.5-turbo'),
+qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key='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',temperature=0,model='gpt-3.5-turbo'),
                                            vectorstore.as_retriever(),
                                         #    memory=memory,
                                            combine_docs_chain_kwargs=chain_type_kwargs,
