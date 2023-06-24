@@ -125,7 +125,7 @@ client = weaviate.Client(
 vectorstore = Weaviate(client, "Wikipedia", "text")
 
 
-qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0,model='gpt-3.5-turbo'),
+qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0,model='gpt-3.5'),
                                            vectorstore.as_retriever(),
                                         #    memory=memory,
                                            combine_docs_chain_kwargs=chain_type_kwargs,
