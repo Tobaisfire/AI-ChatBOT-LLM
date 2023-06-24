@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Name Form</title>
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    .submit-button {
+      padding: 10px;
+      background-color: #25D366;
+      color: #FFF;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #128C7E;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enter Your Name</h2>
+    <form id="name-form" action="/" method="post">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      </div>
+      <button class="submit-button" type="submit">Submit</button>
+    </form>
+  </div>
+</body>
+</html>

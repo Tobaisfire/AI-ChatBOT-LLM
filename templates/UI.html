@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp Chat UI</title>
+  <style>
+    /* Chat container styles */
+    .chat-container {
+      max-width: 50%;
+      height: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      overflow-y: auto;
+      border: 1px solid #DDD;
+      border-radius: 5px;
+    }
+
+    /* Chat bubble styles */
+    .chat-bubble {
+      display: inline-block;
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .chat-bubble.sender {
+      background-color: #DCF8C6;
+      align-self: flex-end;
+    }
+
+    .chat-bubble.receiver {
+      background-color: #ECE5DD;
+      align-self: flex-start;
+    }
+
+    /* Sender name styles */
+    .sender-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    /* Timestamp styles */
+    .timestamp {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* Input and submit button styles */
+    .input-container {
+      display: flex;
+      align-items: center;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+    }
+
+    .user-input {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #DDD;
+      border-radius: 5px;
+    }
+
+    .submit-button {
+      margin-left: 10px;
+      padding: 10px;
+      background-color: #25D366;
+      color: #FFF;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #128C7E;
+    }
+
+    /* Message container styles */
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .message-container.sender {
+      align-items: flex-end;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chat-output" class="chat-output">
+      <!-- Chat bubbles will be dynamically added here -->
+    </div>
+    <div class="input-container">
+      <input id="user-input" class="user-input" type="text" placeholder="Enter your message">
+      <button id="submit-button" class="submit-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to create a new chat bubble with the given message
+    function createChatBubble(sender, message, isSender) {
+      const chatBubble = document.createElement('div');
+      chatBubble.classList.add('chat-bubble');
+      chatBubble.classList.add(isSender ? 'sender' : 'receiver');
+
+      const senderName = document.createElement('div');
+      senderName.classList.add('sender-name');
+      senderName.textContent = sender;
+
+      const messageContent = document.createElement('div');
+      messageContent.textContent = message;
+
+      const timestamp = document.createElement('div');
+      timestamp.classList.add('timestamp');
+      timestamp.textContent = getCurrentTime();
+
+      chatBubble.appendChild(senderName);
+      chatBubble.appendChild(messageContent);
+      chatBubble.appendChild(timestamp);
+
+      return chatBubble;
+    }
+
+    // Function to get the current time in HH:MM format
+    function getCurrentTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      return hours + ':' + minutes;
+    }
+
+    // Function to handle user input and generate chat bubbles
+    function handleUserInput() {
+      const userInput = document.getElementById('user-input');
+      const message = userInput.value.trim();
+      if (message !== '') {
+        const chatOutput = document.getElementById('chat-output');
+
+        // Create a new message container
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message-container');
+        messageContainer.classList.add('sender');
+
+        // Create user's chat bubble
+        const userChatBubble = createChatBubble('You', message, true);
+        messageContainer.appendChild(userChatBubble);
+
+        // Append the message container to the chat output
+        chatOutput.appendChild(messageContainer);
+
+        // Send user's message to the server and get the response
+        fetch('/get_response', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message })
+        })
+          .then(response => response.json())
+          .then(data => {
+            const botReply = data.reply;
+            const botMessageContainer = document.createElement('div');
+            botMessageContainer.classList.add('message-container');
+            botMessageContainer.classList.add('receiver');
+            const botChatBubble = createChatBubble('Bot', botReply, false);
+            botMessageContainer.appendChild(botChatBubble);
+            chatOutput.appendChild(botMessageContainer);
+
+            // Scroll to the bottom after the reply is added
+            scrollToBottom(chatOutput);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+
+        userInput.value = '';
+        userInput.focus();
+      }
+    }
+
+    // Function to scroll to the bottom of the chat container
+    function scrollToBottom(element) {
+      element.scrollTop = element.scrollHeight;
+    }
+
+    // Event listener for the submit button
+    document.getElementById('submit-button').addEventListener('click', handleUserInput);
+
+    // Event listener for pressing Enter key in the input field
+    document.getElementById('user-input').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        handleUserInput();
+      }
+    });
+  </script>
+</body>
+</html>
