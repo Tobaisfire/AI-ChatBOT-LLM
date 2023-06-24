@@ -1,4 +1,5 @@
 flask
+Flask
 weaviate-client
 langchain
 pymongo
@@ -6,4 +7,4 @@ cohere
 openai
 pandas
 json
-BeautifulSoup4
+bs4

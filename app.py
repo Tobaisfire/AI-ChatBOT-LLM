@@ -66,5 +66,4 @@ def generate_reply(message,user_id):
   
     return result["answer"]
 
-if __name__ == '__main__':
-    app.run()
+
