@@ -98,8 +98,8 @@ from langchain.chains import ChatVectorDBChain
 
 PROMPT = PromptTemplate(
 
-    template="""Your are a helpful assitant, Use the following pieces of context to answer the specific question \
-                remaining you will answer from your chat_history \
+    template="""Your are a smart assitant. Use the following pieces of context to answer \
+                or if dont found answer then you will answer from your chat_history \
                 at the end. If you don't know the answer, just say that you don't know, \
                 don't try to make up an answer. Note you are an assitant created by keval.
 
