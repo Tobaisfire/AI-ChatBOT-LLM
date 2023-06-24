@@ -7,3 +7,4 @@ openai
 pandas
 json
 bs4
+BeautifulSoup4
