@@ -1,6 +1,6 @@
 {
     "builds": [
-        { "src": "app.py", "use": "@vercel/python", "env": { "REQUIREMENTS": "requirements.txt" } }
+        { "src": "app.py", "use": "@vercel/python"}
     ],
     "routes": [
         {
