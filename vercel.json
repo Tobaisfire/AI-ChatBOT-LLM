@@ -1,6 +1,6 @@
 {
     "builds": [
-        { "src": "app.py", "use": "@vercel/python","config": { "maxLambdaSize": "15mb", "pythonVersion": "3.9" }}
+        { "src": "app.py", "use": "@vercel/python","config": { "maxLambdaSize": "15mb", "pythonVersion": "3.10.5" }}
     ],
     "routes": [
         {
