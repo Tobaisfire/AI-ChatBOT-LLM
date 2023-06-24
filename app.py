@@ -57,7 +57,7 @@ def generate_reply(message,user_id):
 
     result = qa({"question": str(query),"chat_history":chat_history })
 
-    sleep(2)
+  
     chat_history = [(query, result["answer"])]
 
     data = {'Id':user_id,'msg_history':chat_history}
