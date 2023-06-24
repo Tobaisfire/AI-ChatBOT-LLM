@@ -40,7 +40,7 @@ def get_response():
 
     
     bot_reply = generate_reply(message,user)
-    sleep(10)
+    sleep(2)
     response = {
         'reply': bot_reply
     }
