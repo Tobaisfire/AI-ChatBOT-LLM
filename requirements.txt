@@ -6,5 +6,4 @@ pymongo
 cohere
 openai
 pandas
-json
 bs4
