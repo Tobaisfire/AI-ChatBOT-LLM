@@ -2,15 +2,15 @@
 from langchain.embeddings import CohereEmbeddings
 import weaviate
 import json
-
+import os
 client = weaviate.Client(
     url = "https://llm-chatai-bot-v2-mmelxkrr.weaviate.network",  # Replace with your endpoint
-    auth_client_secret=weaviate.AuthApiKey(api_key="RDdL12G2jw7mm8ns7DaDBRkdU2mT8OTAkGOG"),  # Replace w/ your Weaviate instance API key
+    auth_client_secret=weaviate.AuthApiKey(api_key=os.environ.get('we')),  # Replace w/ your Weaviate instance API key
     additional_headers = {
-       "X-Cohere-Api-Key": "PoQqB6c283yGmex4A2cSwQWxYj5oP1rh9bkuqKYy"  # Replace with your inference API key
+       "X-Cohere-Api-Key": os.environ.get('co')  # Replace with your inference API key
     }
 )
-embeddings = CohereEmbeddings(cohere_api_key='PoQqB6c283yGmex4A2cSwQWxYj5oP1rh9bkuqKYy',model='multilingual-22-12')
+embeddings = CohereEmbeddings(cohere_api_key=os.environ.get('co'),model='multilingual-22-12')
 
 
 
@@ -30,7 +30,7 @@ class Mem:
     def __init__(self) -> None:
         pass
     def bot_memory(self,id_session):
-        client = MongoClient('mongodb+srv://Keval:wITlI7TnqdzjQYn2@cluster-bot-app.98wpose.mongodb.net/')
+        client = MongoClient(os.environ.get('mongo_url'))
         
         db = client['Bot-history']
 
@@ -53,7 +53,7 @@ class Mem:
 
     def insert_or_update_data(self,data):
   
-        client = MongoClient('mongodb+srv://Keval:wITlI7TnqdzjQYn2@cluster-bot-app.98wpose.mongodb.net/')
+        client = MongoClient(os.environ.get('mongo_url'))
     
         try:
           
@@ -117,15 +117,15 @@ chain_type_kwargs = {"prompt": PROMPT}
 
 client = weaviate.Client(
     url = "https://llm-chatai-bot-v2-mmelxkrr.weaviate.network",  # Replace with your endpoint
-    auth_client_secret=weaviate.AuthApiKey(api_key="RDdL12G2jw7mm8ns7DaDBRkdU2mT8OTAkGOG"),  # Replace w/ your Weaviate instance API key
+    auth_client_secret=weaviate.AuthApiKey(api_key=os.environ.get('we')),  # Replace w/ your Weaviate instance API key
     additional_headers = {
-       "X-Cohere-Api-Key": "PoQqB6c283yGmex4A2cSwQWxYj5oP1rh9bkuqKYy"  # Replace with your inference API key
+       "X-Cohere-Api-Key": os.environ.get('co')  # Replace with your inference API key
     })
 
 vectorstore = Weaviate(client, "Wikipedia", "text")
 
 
-qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key='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',temperature=0,model='gpt-3.5-turbo'),
+qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0,model='gpt-3.5-turbo'),
                                            vectorstore.as_retriever(),
                                         #    memory=memory,
                                            combine_docs_chain_kwargs=chain_type_kwargs,
