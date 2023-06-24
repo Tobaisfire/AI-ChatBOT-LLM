@@ -65,3 +65,4 @@ def generate_reply(message,user_id):
     memory.insert_or_update_data(data)
   
     return result["answer"]
+
