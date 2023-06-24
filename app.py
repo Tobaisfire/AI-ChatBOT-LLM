@@ -33,14 +33,14 @@ def home():
 @app.route('/get_response', methods=['POST'])
 def get_response():
     user = session['user']
-    print(user)
+    
     data = request.get_json()
     message = data['message']
     
-    print(message)
 
-    bot_reply = generate_reply(message,user)
     
+    bot_reply = generate_reply(message,user)
+    sleep(10)
     response = {
         'reply': bot_reply
     }
@@ -55,7 +55,6 @@ def generate_reply(message,user_id):
 
     query = message
 
-    sleep(5)
     result = qa({"question": str(query),"chat_history":chat_history })
 
   
