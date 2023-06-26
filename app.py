@@ -40,7 +40,7 @@ def get_response():
 
     
     bot_reply = generate_reply(message,user)
-    sleep(2)
+    sleep(1)
     response = {
         'reply': bot_reply
     }
@@ -56,7 +56,7 @@ def generate_reply(message,user_id):
     query = message
 
     # result = qa({"question": str(query),"chat_history":chat_history })
-    result = qa(str(query))
+    result = qa(str(query),chat_history)
 
   
     chat_history = [(query, result)]
@@ -64,6 +64,17 @@ def generate_reply(message,user_id):
     data = {'Id':user_id,'msg_history':chat_history}
 
     memory.insert_or_update_data(data)
+    if 'Answer:' in result or 'Response:' in result:
+        result = result.split(':')[1]
+    else:
+        result = result
+
+    memory.finder(user_id)
+    
+    
   
     return result
 
+
+
+# app.run(debug=True)

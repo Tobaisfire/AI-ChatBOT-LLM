@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WhatsApp Chat UI</title>
+  <title>Tobis-Chatai</title>
   <style>
     /* Chat container styles */
     .chat-container {
       max-width: 50%;
-      height: 500px;
+      height: 700px;
       margin: 0 auto;
       padding: 20px;
       overflow-y: auto;
-      border: 1px solid #DDD;
+      border: 5px groove #DDD;
       border-radius: 5px;
     }
 
@@ -60,7 +60,7 @@
       flex-grow: 1;
       padding: 10px;
       font-size: 16px;
-      border: 1px solid #DDD;
+      border: 8px groove #DDD;
       border-radius: 5px;
     }
 
@@ -169,7 +169,7 @@
             const botMessageContainer = document.createElement('div');
             botMessageContainer.classList.add('message-container');
             botMessageContainer.classList.add('receiver');
-            const botChatBubble = createChatBubble('Bot', botReply, false);
+            const botChatBubble = createChatBubble('Tob', botReply, false);
             botMessageContainer.appendChild(botChatBubble);
             chatOutput.appendChild(botMessageContainer);
 

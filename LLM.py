@@ -15,14 +15,14 @@ embeddings = CohereEmbeddings(cohere_api_key=os.environ.get('co'),model='multili
 
 
 
-from langchain.callbacks import get_openai_callback
+# from langchain.callbacks import get_openai_callback
 
-def count_tokens(agent, query):
-    with get_openai_callback() as cb:
-        result = agent.run(query)
-        print(f'Spent a total of {cb.total_tokens} tokens')
+# def count_tokens(agent, query):
+#     with get_openai_callback() as cb:
+#         result = agent.run(query)
+#         print(f'Spent a total of {cb.total_tokens} tokens')
 
-    return result
+#     return result
 
 
 from pymongo import MongoClient
@@ -85,6 +85,26 @@ class Mem:
             client.close()
 
 
+    def finder(self,id_session):
+        client = MongoClient(os.environ.get('mongo_url'))
+        
+        db = client['Bot-history']
+
+        collection = db['Chat-history']
+
+        existing_data = collection.find_one({'Id': id_session})
+
+        exist_memory_list = eval(existing_data['msg_history'])
+
+        if len(exist_memory_list) > 20:
+            a1 = f"hello, my name is {id_session}."
+            a2 = f"Hello {id_session}! How can I assist you today?"
+            new_msg_history = [(a1, a2)]
+    
+         
+            collection.update_one({'Id': id_session}, {'$set': {'msg_history': str(new_msg_history)}})
+            
+
 
 
 
@@ -98,18 +118,18 @@ from langchain.chains.question_answering import load_qa_chain
 
 PROMPT = PromptTemplate(
 
-    template="""Your are a smart assitant. Use the following pieces of context to answer \
-                or if dont found answer then you will answer from your chat_history \
-                at the end. If you don't know the answer, just say that you don't know, \
-                don't try to make up an answer. Note you are an assitant created by keval.
+    template="""Your are a smart assitant. First Use the following pieces of context to answer \
+                or if user ask about himself/herself like what is my name you will answer from chat_history \
+                at the end. If you don't know the answer, you can provide short answer. \
+                Note you are an assitant created by keval Saud.
 
                 {context}
 
-          
+                {chat_history}          
                 Question: {question}
                 
           """,
-    input_variables=["question","context"]
+    input_variables=["question","context","chat_history"]
 )
 
 #{chat_history}
@@ -117,16 +137,11 @@ PROMPT = PromptTemplate(
 chain_type_kwargs = {"prompt": PROMPT}
 
 
-client = weaviate.Client(
-    url = "https://llm-chatai-bot-v2-mmelxkrr.weaviate.network",  # Replace with your endpoint
-    auth_client_secret=weaviate.AuthApiKey(api_key=os.environ.get('we')),  # Replace w/ your Weaviate instance API key
-    additional_headers = {
-       "X-Cohere-Api-Key": os.environ.get('co')  # Replace with your inference API key
-    })
+
 
 vectorstore = Weaviate(client, "Wikipedia", "text")
 
-def docs_result(query,num =3):
+def docs_result(query,num = 2):
     doc = vectorstore.similarity_search(
         query, 
         k=int(num)
@@ -140,13 +155,15 @@ def docs_result(query,num =3):
 #                                            combine_docs_chain_kwargs=chain_type_kwargs,
 #                                           #  verbose= True
 #                                            )
-def qa(query):
+def qa(query,chat_history):
     doc =docs_result(query)
 
-    print(doc)
-    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo'), chain_type="stuff", combine_docs_chain_kwargs=chain_type_kwargs)
+    # print(doc)
+    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo'), chain_type="stuff",prompt=PROMPT)
+
     
-    result2 = chain.run(input_documents=doc, question=query)  
+    result2 = chain.run(input_documents=doc, question=query,chat_history= chat_history)  
     return result2
 
 
+#os.environ.get('openai')
