@@ -3,6 +3,17 @@ from langchain.embeddings import CohereEmbeddings
 import weaviate
 import json
 import os
+
+
+
+import os
+
+
+
+
+
+
+
 client = weaviate.Client(
     url = "https://llm-chatai-bot-v2-mmelxkrr.weaviate.network",  # Replace with your endpoint
     auth_client_secret=weaviate.AuthApiKey(api_key=os.environ.get('we')),  # Replace w/ your Weaviate instance API key
