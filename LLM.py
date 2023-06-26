@@ -153,7 +153,14 @@ PROMPT = PromptTemplate(
     template="""Your are a smart assitant name tobi.First go through chat_history. Use the following pieces of context to answer \
                 or If you don't know the answer, you can provide short answer. \
                 remember use chat_hsitory as a conversation flow between you and user, always follow the chat_history flow and  \
-                always go through before answering.
+                always go through before answering and if user provide new information then override the chat_history according to it.
+                go through chat_history flow like this way explain below:
+
+                user: tell me about tenses.
+                assitant : Tenses are the forms of verbs that show the time something happened or is going to happen. There are three main tenses in English
+                user: ok.
+                assitant : Great! If you have any more questions or need further assistance, feel free to ask. I'm here to help!.
+
 
                 {context}
 
