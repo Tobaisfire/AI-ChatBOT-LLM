@@ -91,9 +91,9 @@ class Mem:
 from langchain.vectorstores.weaviate import Weaviate
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import ConversationalRetrievalChain
-from langchain.chains import ChatVectorDBChain
-
+# from langchain.chains import ConversationalRetrievalChain
+# from langchain.chains import ChatVectorDBChain
+from langchain.chains.question_answering import load_qa_chain
 
 
 PROMPT = PromptTemplate(
@@ -105,12 +105,14 @@ PROMPT = PromptTemplate(
 
                 {context}
 
-                {chat_history}             
+          
                 Question: {question}
                 
           """,
-    input_variables=["chat_history","question","context"]
+    input_variables=["question","context"]
 )
+
+#{chat_history}
 
 chain_type_kwargs = {"prompt": PROMPT}
 
@@ -124,13 +126,27 @@ client = weaviate.Client(
 
 vectorstore = Weaviate(client, "Wikipedia", "text")
 
+def docs_result(query,num =3):
+    doc = vectorstore.similarity_search(
+        query, 
+        k=int(num)
+    )
 
-qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0,model='gpt-3.5-turbo'),
-                                           vectorstore.as_retriever(),
-                                        #    memory=memory,
-                                           combine_docs_chain_kwargs=chain_type_kwargs,
-                                          #  verbose= True
-                                           )
+    return doc
 
+# qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0,model='gpt-3.5-turbo'),
+#                                            vectorstore.as_retriever(),
+#                                         #    memory=memory,
+#                                            combine_docs_chain_kwargs=chain_type_kwargs,
+#                                           #  verbose= True
+#                                            )
+def qa(query):
+    doc =docs_result(query)
+
+    print(doc)
+    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo'), chain_type="stuff", combine_docs_chain_kwargs=chain_type_kwargs)
+    
+    result2 = chain.run(input_documents=doc, question=query)  
+    return result2
 
 

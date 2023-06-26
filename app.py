@@ -55,14 +55,15 @@ def generate_reply(message,user_id):
 
     query = message
 
-    result = qa({"question": str(query),"chat_history":chat_history })
+    # result = qa({"question": str(query),"chat_history":chat_history })
+    result = qa(str(query))
 
   
-    chat_history = [(query, result["answer"])]
+    chat_history = [(query, result)]
 
     data = {'Id':user_id,'msg_history':chat_history}
 
     memory.insert_or_update_data(data)
   
-    return result["answer"]
+    return result
 
