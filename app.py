@@ -51,6 +51,9 @@ def get_response():
 
 
 def generate_reply(message,user_id):
+
+    memory.init_mem(user_id)
+    sleep(0.5)
     chat_history = memory.bot_memory(user_id)
 
     query = message

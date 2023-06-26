@@ -29,6 +29,30 @@ from pymongo import MongoClient
 class Mem:
     def __init__(self) -> None:
         pass
+
+    def init_mem(self,id_session):
+        client = MongoClient(os.environ.get('mongo_url'))
+        
+        db = client['Bot-history']
+
+        collection = db['Chat-history']
+
+        existing_data = collection.find_one({'Id': id_session})
+
+        exist_memory_list = eval(existing_data['msg_history'])
+
+        if exist_memory_list == None:
+            a1 = f"hello, my name is {id_session}."
+            a2 = f"Hello {id_session}! How can I assist you today?"
+            new_msg_history = [(a1, a2)]
+    
+         
+            collection.update_one({'Id': id_session}, {'$set': {'msg_history': str(new_msg_history)}})
+
+        else:
+            pass
+
+
     def bot_memory(self,id_session):
         client = MongoClient(os.environ.get('mongo_url'))
         
@@ -41,13 +65,13 @@ class Mem:
             
             return eval(collection.find_one({'Id': id_session})['msg_history'])
 
-        else:
-            data ={ 'Id' :id_session,
-            'msg_history':str([])}
+        # else:
+        #     data ={ 'Id' :id_session,
+        #     'msg_history':str([])}
 
-            self.insert_or_update_data(data)
+        #     self.insert_or_update_data(data)
 
-            return eval(collection.find_one({'Id': id_session})['msg_history'])
+        #     return eval(collection.find_one({'Id': id_session})['msg_history'])
             
 
 
