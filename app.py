@@ -61,16 +61,16 @@ def generate_reply(message,user_id):
     # result = qa({"question": str(query),"chat_history":chat_history })
     result = qa(str(query),chat_history)
 
-  
+    if 'Answer:' in result or 'Response:' in result:
+        result = result.split(':')[1]
+    else:
+        result = result
+
     chat_history = [(query, result)]
 
     data = {'Id':user_id,'msg_history':chat_history}
 
     memory.insert_or_update_data(data)
-    if 'Answer:' in result or 'Response:' in result:
-        result = result.split(':')[1]
-    else:
-        result = result
 
     memory.finder(user_id)
     

@@ -48,9 +48,9 @@ class Mem:
             a1 = f"hello, my name is {id_session}."
             a2 = f"Hello {id_session}! How can I assist you today?"
             new_msg_history = [(a1, a2)]
-    
          
-            collection.update_one({'Id': id_session}, {'$set': {'msg_history': str(new_msg_history)}})
+         
+            collection.insert_one({'Id': id_session,'msg_history': new_msg_history})
 
         else:
             pass
@@ -65,8 +65,8 @@ class Mem:
 
         existing_data = collection.find_one({'Id': id_session})
         if existing_data!=None:
-            
-            return eval(collection.find_one({'Id': id_session})['msg_history'])
+
+            return collection.find_one({'Id': id_session})['msg_history']
 
         # else:
         #     data ={ 'Id' :id_session,
@@ -95,11 +95,11 @@ class Mem:
     
          
 
-                exist_list = eval(existing_data['msg_history'])
+                exist_list = existing_data['msg_history']
                 new_msg_history = exist_list + data['msg_history']
     
          
-                collection.update_one({'Id': data['Id']}, {'$set': {'msg_history': str(new_msg_history)}})
+                collection.update_one({'Id': data['Id']}, {'$set': {'msg_history': new_msg_history}})
    
             else:
 
@@ -121,7 +121,7 @@ class Mem:
 
         existing_data = collection.find_one({'Id': id_session})
 
-        exist_memory_list = eval(existing_data['msg_history'])
+        exist_memory_list = existing_data['msg_history']
 
         if len(exist_memory_list) > 20:
             a1 = f"hello, my name is {id_session}."
@@ -129,7 +129,7 @@ class Mem:
             new_msg_history = [(a1, a2)]
     
          
-            collection.update_one({'Id': id_session}, {'$set': {'msg_history': str(new_msg_history)}})
+            collection.update_one({'Id': id_session}, {'$set': {'msg_history': new_msg_history}})
             
 
 
