@@ -31,6 +31,7 @@ class Mem:
         pass
 
     def init_mem(self,id_session):
+        
         client = MongoClient(os.environ.get('mongo_url'))
         
         db = client['Bot-history']
@@ -39,9 +40,11 @@ class Mem:
 
         existing_data = collection.find_one({'Id': id_session})
 
-        exist_memory_list = eval(existing_data['msg_history'])
+        
 
-        if exist_memory_list == None:
+        if existing_data == None:
+
+            # exist_memory_list = eval(existing_data['msg_history'])
             a1 = f"hello, my name is {id_session}."
             a2 = f"Hello {id_session}! How can I assist you today?"
             new_msg_history = [(a1, a2)]
