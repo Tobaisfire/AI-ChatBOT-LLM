@@ -40,7 +40,7 @@ def get_response():
 
     
     bot_reply = generate_reply(message,user)
-    sleep(1)
+    
     response = {
         'reply': bot_reply
     }
@@ -53,7 +53,7 @@ def get_response():
 def generate_reply(message,user_id):
 
     memory.init_mem(user_id)
-    sleep(1)
+    
     chat_history = memory.bot_memory(user_id)
 
     query = message
@@ -71,7 +71,7 @@ def generate_reply(message,user_id):
     data = {'Id':user_id,'msg_history':chat_history}
 
     memory.insert_or_update_data(data)
-    sleep(1)
+
     memory.finder(user_id)
     
     
@@ -79,3 +79,4 @@ def generate_reply(message,user_id):
     return result
 
 
+# app.run(debug=True)

@@ -6,12 +6,6 @@ import os
 
 
 
-import os
-
-
-
-
-
 
 
 client = weaviate.Client(
