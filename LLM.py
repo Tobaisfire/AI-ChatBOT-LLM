@@ -128,7 +128,7 @@ class Mem:
 
         exist_memory_list = existing_data['msg_history']
 
-        if len(exist_memory_list) > 20:
+        if len(exist_memory_list) > 100:
             a1 = f"hello, my name is {id_session}."
             a2 = f"Hello {id_session}! How can I assist you today?"
             new_msg_history = [(a1, a2)]
