@@ -25,7 +25,7 @@ The repository is organized as follows:
 
 ## Link to Model:
 
-[https://huggingface.co/spaces/TobiasFire/M2del-Deck](https://chat-with-tobis.vercel.app/)
+[https://chat-with-tobis.vercel.app/]
 
 ## Getting Started:
 To get started with the project, please follow the instructions provided in the `README.md` file. It includes detailed steps for installation, setup, and usage of the chatbot. Make sure to review the documentation and example code snippets in the `docs/` and `examples/` directories, respectively, to gain a better understanding of the project's capabilities and usage scenarios.
