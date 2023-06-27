@@ -191,7 +191,7 @@ def qa(query,chat_history):
     doc =docs_result(query)
 
     # print(doc)
-    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo'), chain_type="stuff",prompt=PROMPT)
+    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo-0301'), chain_type="stuff",prompt=PROMPT)
 
     
     result2 = chain.run(input_documents=doc, question=query,chat_history= chat_history)  
