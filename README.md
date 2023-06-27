@@ -8,7 +8,7 @@ This repository contains a comprehensive implementation of an advanced chatbot u
 - **Langchain Integration**: Langchain framework is utilized to connect Cohere and Wevaite vector database. This integration streamlines the process of pushing and pulling Wiki embeddings, ensuring optimal performance and retrieval efficiency.
 - **Semantic Search and QA Retrieval**: By leveraging Langchain and Wevaite, the chatbot performs semantic search and question-answering retrieval. It retrieves relevant information based on user queries and provides contextually appropriate responses.
 - **LLM GPT 3.5 Turbo**: The chatbot utilizes the powerful LLM GPT 3.5 Turbo from OpenAI to enhance the conversational experience. It takes context from semantic search results and generates responses based on the retrieved information.
-
+- **Chat History With MONGO DB**: he chatbot utilizes MongoDb to Stored up converstion flow.
 ## Repository Structure:
 The repository is organized as follows:
 - `langchain`: Implements the Langchain framework for converting questions to embeddings using Cohere.
