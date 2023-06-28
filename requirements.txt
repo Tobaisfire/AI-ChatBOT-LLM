@@ -7,3 +7,4 @@ cohere
 openai
 pandas
 bs4
+gunicorn
