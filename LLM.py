@@ -6,11 +6,6 @@ import os
 
 
 
-os.environ['openai'] = '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'
-os.environ['co'] = 'PoQqB6c283yGmex4A2cSwQWxYj5oP1rh9bkuqKYy'
-
-os.environ['we'] = 'RDdL12G2jw7mm8ns7DaDBRkdU2mT8OTAkGOG'
-os.environ['mongo_url'] = 'mongodb+srv://keval:MwMUk0GNvlieCOGi@chatbot.m1prbcn.mongodb.net/'
 
 client = weaviate.Client(
     url = "https://llm-chatai-bot-v2-mmelxkrr.weaviate.network",  # Replace with your endpoint
