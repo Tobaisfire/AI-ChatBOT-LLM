@@ -6,7 +6,11 @@ import os
 
 
 
+os.environ['openai'] = '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'
+os.environ['co'] = 'PoQqB6c283yGmex4A2cSwQWxYj5oP1rh9bkuqKYy'
 
+os.environ['we'] = 'RDdL12G2jw7mm8ns7DaDBRkdU2mT8OTAkGOG'
+os.environ['mongo_url'] = 'mongodb+srv://keval:MwMUk0GNvlieCOGi@chatbot.m1prbcn.mongodb.net/'
 
 client = weaviate.Client(
     url = "https://llm-chatai-bot-v2-mmelxkrr.weaviate.network",  # Replace with your endpoint
@@ -35,30 +39,30 @@ class Mem:
     def __init__(self) -> None:
         pass
 
-    def init_mem(self,id_session):
+    # def init_mem(self,id_session):
         
-        client = MongoClient(os.environ.get('mongo_url'))
+    #     client = MongoClient(os.environ.get('mongo_url'))
         
-        db = client['Bot-history']
+    #     db = client['Bot-history']
 
-        collection = db['Chat-history']
+    #     collection = db['Chat-history']
 
-        existing_data = collection.find_one({'Id': id_session})
+    #     existing_data = collection.find_one({'Id': id_session})
 
         
 
-        if existing_data == None:
+    #     if existing_data == None:
 
-            # exist_memory_list = eval(existing_data['msg_history'])
-            a1 = f"hello, my name is {id_session}."
-            a2 = f"Hello {id_session}! How can I assist you today?"
-            new_msg_history = [(a1, a2)]
+    #         # exist_memory_list = eval(existing_data['msg_history'])
+    #         a1 = f"hello, my name is {id_session}."
+    #         a2 = f"Hello {id_session}! How can I assist you today?"
+    #         new_msg_history = [(a1, a2)]
          
          
-            collection.insert_one({'Id': id_session,'msg_history': new_msg_history})
+    #         collection.insert_one({'Id': id_session,'msg_history': new_msg_history})
 
-        else:
-            pass
+    #     else:
+    #         pass
 
 
     def bot_memory(self,id_session):
@@ -73,13 +77,15 @@ class Mem:
 
             return collection.find_one({'Id': id_session})['msg_history']
 
-        # else:
-        #     data ={ 'Id' :id_session,
-        #     'msg_history':str([])}
+        else:
+            a1 = f"hello, my name is {id_session}."
+            a2 = f"Hello {id_session}! How can I assist you today?"
+            data ={ 'Id' :id_session,
+            'msg_history':([a1,a2])}
 
-        #     self.insert_or_update_data(data)
-
-        #     return eval(collection.find_one({'Id': id_session})['msg_history'])
+            self.insert_or_update_data(data)
+            
+            return collection.find_one({'Id': id_session})['msg_history']
             
 
 
@@ -135,6 +141,8 @@ class Mem:
     
          
             collection.update_one({'Id': id_session}, {'$set': {'msg_history': new_msg_history}})
+        else:
+            pass
             
 
 
@@ -143,16 +151,16 @@ class Mem:
 from langchain.vectorstores.weaviate import Weaviate
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
-# from langchain.chains import ConversationalRetrievalChain
-# from langchain.chains import ChatVectorDBChain
+
 from langchain.chains.question_answering import load_qa_chain
 
 
 PROMPT = PromptTemplate(
 
-    template="""Your are a smart assitant name tobi . First Use the following pieces of context to answer \
-                or if user ask about himself/herself like what is my name you will answer from chat_history \
-                at the end. If you don't know the answer, you can provide short answer by your own.\
+    template="""Your are a smart assitant name tobi . 
+                First Use the following pieces of context to answer \
+                or if user ask about himself/herself like what is my name you will answer from chat_history at the end. 
+                If you don't know the answer, you can provide short answer by your own.
                 Note you are an assitant created by keval Saud .
 
                 {context}
@@ -164,7 +172,6 @@ PROMPT = PromptTemplate(
     input_variables=["question","context","chat_history"]
 )
 
-#{chat_history}
 
 chain_type_kwargs = {"prompt": PROMPT}
 
@@ -173,29 +180,22 @@ chain_type_kwargs = {"prompt": PROMPT}
 
 vectorstore = Weaviate(client, "Wikipedia", "text")
 
-def docs_result(query,num = 2):
+def docs_result(query):
     doc = vectorstore.similarity_search(
         query, 
-        k=int(num)
+    
     )
 
     return doc
 
-# qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0,model='gpt-3.5-turbo'),
-#                                            vectorstore.as_retriever(),
-#                                         #    memory=memory,
-#                                            combine_docs_chain_kwargs=chain_type_kwargs,
-#                                           #  verbose= True
-#                                            )
+
 def qa(query,chat_history):
     doc =docs_result(query)
 
-    # print(doc)
-    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo-0301'), chain_type="stuff",prompt=PROMPT)
+    chain = load_qa_chain(ChatOpenAI(openai_api_key=os.environ.get('openai'),temperature=0.0,model='gpt-3.5-turbo'), chain_type="stuff",prompt=PROMPT)
 
     
-    result2 = chain.run(input_documents=doc, question=query,chat_history= chat_history)  
+    result2 = chain.run(input_documents=doc, question=query,chat_history= chat_history) 
+
     return result2
 
-
-#os.environ.get('openai')

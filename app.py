@@ -52,13 +52,12 @@ def get_response():
 
 def generate_reply(message,user_id):
 
-    memory.init_mem(user_id)
+    # memory.init_mem(user_id)
     
     chat_history = memory.bot_memory(user_id)
-
+    sleep(0.2)
     query = message
 
-    # result = qa({"question": str(query),"chat_history":chat_history })
     result = qa(str(query),chat_history)
 
     if 'Answer:' in result or 'Response:' in result:
